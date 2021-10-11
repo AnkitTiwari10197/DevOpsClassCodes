@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+    tools {
+        maven 'my maven'
+    }
+
+    stages {
+        stage('clone scm') {
+            steps {
+                git url: 'https://github.com/AnkitTiwari10197/DevOpsClassCodes.git'
+            }
+        }
+        
+        stage('Compile_job') {
+            steps {
+                sh 'mvn compile'
+            }
+        }
+        
+        stage('Code_review_job') {
+            steps {
+                sh 'mvn -P metrics pmd:pmd'
+                
+            }
+        }
+        
+        stage('QA_unit_test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        
+        stage('Package_job') {
+            steps {
+                sh 'mvn package'
+            }
+        }
+    }
+}
